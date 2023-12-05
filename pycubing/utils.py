@@ -200,8 +200,10 @@ def convert_3x3_moves_to_2x2(moves: list[str]) -> list[str]:
     new_moves = []
     for m in moves:
         letter, dist, layer, width = get_letter_dist_layer_width(m, 3)
-        if layer == 1 or width == 1 and layer == 2:
+        if layer == 1:
             new_moves.append(m)
+            continue
+        elif width == 1 and layer == 2:
             continue
         new_layer = new_width = None
         if layer == 2:

@@ -46,19 +46,14 @@ class Cube():
         'x': (Face.LEFT, Face.RIGHT)
     }
 
-    COLOR_PAIRS = {
-        'x': (Color.RED, Color.ORANGE),
-        'z': (Color.BLUE, Color.GREEN),
-        'y': (Color.WHITE, Color.YELLOW)
-    }
-
     COLOR_TO_STRING = {
         Color.YELLOW: 'y',
         Color.GREEN: 'g',
         Color.RED: 'r',
         Color.BLUE: 'b',
         Color.WHITE: 'w',
-        Color.ORANGE: 'o'
+        Color.ORANGE: 'o',
+        None: ' '
     }  
 
     STRING_TO_COLOR = {

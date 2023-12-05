@@ -6,9 +6,24 @@ import numpy as np
 
 from pycubing.enums import Color, Face
 from pycubing.cube import Cube, Cube3x3
+from pycubing.solver.solver3x3 import orient_centers, solve_first_layer_corners, solve_oll_corners, solve_oll_edges, solve_pll_corners, solve_second_layer_edges, solve_white_cross
 from pycubing.utils import SolvePipeline
 
 FLIPPER_ALG = "R U R' F R' F' R"
+
+def pll_parity(cube: Cube) -> list[str]:
+    """
+    Applies the PLL parity algorithm.
+    This only happens on EVEN by EVEN for some reason.
+    """
+    moves = []
+    cube.turn("R", 2, cube.N // 2, cube.N // 2 - 1, moves)
+    cube.turn("U", 2, 1, 1, moves)
+    cube.turn("R", 2, cube.N // 2, cube.N // 2 - 1, moves)
+    cube.turn("U", 2, cube.N // 2, cube.N // 2, moves)
+    cube.turn("R", 2, cube.N // 2, cube.N // 2 - 1, moves)
+    cube.turn("U", 2, cube.N // 2, cube.N // 2 - 1, moves)
+    return moves
 
 def solve_centers(cube: Cube) -> list[str]:
     """
@@ -349,6 +364,16 @@ def solve_edges(cube: Cube) -> list[str]:
 PIPELINE_NxN = SolvePipeline(
     solve_centers,
     solve_edges
+)
+
+PIPELINE_NxN_3x3_STAGE = SolvePipeline(
+    orient_centers, 
+    solve_white_cross, 
+    solve_first_layer_corners,
+    solve_second_layer_edges,
+    solve_oll_edges,
+    solve_oll_corners,
+    solve_pll_corners
 )
 
 if __name__ == "__main__":
