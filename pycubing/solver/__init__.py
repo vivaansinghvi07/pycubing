@@ -18,7 +18,7 @@ def solve(cube: Cube, mutate_original: bool = False) -> list[str]:
             cube_3x3 = cube.get_3x3()
             moves = convert_3x3_moves_to_2x2(PIPELINE_2x2(cube_3x3))
             if mutate_original:
-                cube.parse(" ".join(moves))
+                cube.parse(moves)
             moves += orient_top_until_solve(cube)
             return moves
         case 3:
@@ -27,12 +27,12 @@ def solve(cube: Cube, mutate_original: bool = False) -> list[str]:
             moves_to_3x3 = PIPELINE_NxN(cube)
             cube_3x3 = cube.get_3x3()
             moves_to_possible_parity = convert_3x3_moves_to_NxN(PIPELINE_NxN_3x3_STAGE(cube_3x3), N)
-            cube.parse(" ".join(moves_to_possible_parity))
+            cube.parse(moves_to_possible_parity)
             try:
                 final_moves = convert_3x3_moves_to_NxN(solve_pll_edges(cube_3x3), N)
             except ParityException:
                 final_moves = pll_parity(cube)
                 final_moves += convert_3x3_moves_to_NxN(solve_pll_edges(cube.get_3x3()), N)
             if mutate_original:
-                cube.parse(" ".join(final_moves))
+                cube.parse(final_moves)
             return moves_to_3x3 + moves_to_possible_parity + final_moves

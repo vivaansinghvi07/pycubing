@@ -216,14 +216,14 @@ class Cube():
         """ Returns the mutable array of the cube """
         return self._cube
 
-    def parse(self, moves: str, output_movelist: Optional[list[str]] = None):
+    def parse(self, moves: str | list[str], output_movelist: Optional[list[str]] = None):
         """
         Parses a list of moves given as a string with each move seperated by a space.
-        The no_spaces argument can be passed to parse without considering spaces,
-        but requires the cube to be 5x5x5 or less.
+        Or as a list of single turns.
         """
-        move_list = moves.split()
-        for m in filter(lambda x: bool(x.strip()), move_list):
+        if isinstance(moves, str):
+            moves = moves.split()
+        for m in filter(lambda x: bool(x.strip()), moves):
             letter, dist, layer, width = get_letter_dist_layer_width(m, self.N)
             self.turn(letter.upper(), dist, layer, width, output_movelist)
         

@@ -2,8 +2,8 @@ import numpy as np
 
 from pycubing.enums import Color, Face
 from pycubing.cube import Cube, Cube3x3
-from pycubing.utils import sexy_move_times, SolvePipeline
 from pycubing.error import ImpossibleScrambleException, ParityException
+from pycubing.utils import reverse_moves, sexy_move_times, SolvePipeline
 
 __doc__ = """
 Functions for solving a 3x3. Each function works in order,
@@ -388,7 +388,9 @@ def solve_pll_edges(cube: Cube3x3) -> list[str]:
             for face in SIDE_FACES
         ])):
             case 0: pass
-            case 2: raise ParityException("Edge parity detected. Fix it and try again.")
+            case 2: 
+                cube.parse(reverse_moves(moves))
+                raise ParityException("Edge parity detected. Fix it and try again.")
             case 4: cube.parse(edge_swap, output_movelist=moves)
             case 3: 
                 loc = l.index(False)
